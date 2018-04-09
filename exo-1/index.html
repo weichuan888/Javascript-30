@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Js-01</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="main">
+      <div data-key="65" class="key">
+        <p>A</p>
+        <span class="sound">clap</span>
+      </div>
+      <div data-key="90" class="key">
+        <p>Z</p>
+        <span class="sound">hithat</span>
+      </div>
+      <div data-key="69" class="key">
+        <p>E</p>
+        <span class="sound">kick</span>
+      </div>
+      <div data-key="82" class="key">
+        <p>R</p>
+        <span class="sound">truc</span>
+      </div>
+    </div>
+
+    <audio data-key="65" src="sound/707.wav"></audio>
+    <audio data-key="90" src="sound/aero.wav"></audio>
+    <audio data-key="69" src="sound/applause.wav"></audio>
+    <audio data-key="82" src="sound/rock.wav"></audio>
+
+    <script type="text/javascript">
+
+      window.addEventListener('keydown', function(e){
+        // console.log(e.keyCode);
+        const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+        const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+        if (!audio) return; // stop the function from running alltogether
+        audio.currentTime= 0; //rewind to the start recommence.
+        audio.play();
+        key.classList.add("playing");
+        console.log(audio);
+      });
+
+
+      function removeTransition(e){
+        if (e.propertyName !== 'transform') return; // skip if it is not a transform
+        // console.log(e.propertyName);
+        this.classList.remove('playing');
+        // on rajoute le this, qui va reprendre le mot cle key en bas, afin de retirer la fonction playing apres avoir cliqué dessus
+      }
+
+      const keys = document.querySelectorAll('.key');
+      keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+      // on crée une nouvelle variable keys afin de devoiler element transform lorquon clique dessus.
+
+
+
+            // Celle ci est une autre méthode de lecrire
+            // cree une foncton playsound et removeTransition et les appeller en bas avec window
+            // function playSound(e) {
+            //   const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+            //   const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+            //   if (!audio) return; // stop the function from running alltogether
+            //   audio.currentTime= 0; //rewind to the start recommence.
+            //   audio.play();
+            //   key.classList.add("playing");
+            // };
+            //
+            // function removeTransition(e){
+            //     if (e.propertyName !== 'transform') return; // skip if it is not a transform
+            //         // console.log(e.propertyName);
+            //       this.classList.remove('playing');
+            //       // on rajoute le this, qui va reprendre le mot cle key en bas, afin de retirer la fonction playing apres avoir cliqué dessus
+            //     }
+            //
+            // const keys = document.querySelectorAll('.key');
+            // keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+            // // on crée une nouvelle variable keys afin de devoiler element transform lorquon clique dessus.
+            //
+            // window.addEventListener('keydown', playSound);
+    </script>
+  </body>
+</html>
