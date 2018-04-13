@@ -3,28 +3,21 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>exo-7 canvas</title>
+    <title>HTML5 Canvas</title>
 </head>
 
 <body>
     <canvas id="draw" width="800" height="800"></canvas>
-
     <script>
-        // on cree une variable contenant le selector a selectionner
         const canvas = document.querySelector('#draw');
-        // on specifique qu'on veut en 2d, et quon ajoute une hauteur et largeur
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         ctx.strokeStyle = '#BADA55';
         ctx.lineJoin = 'round';
         ctx.lineCap = 'round';
-        ctx.linewitdh = 100;
-
-        //        ctx.globalCompositeOperation = "multiply";
-        // je cree des variables, afin de définir un booleen et appliquer dans addEventListener        
+        ctx.lineWidth = 100;
+        // ctx.globalCompositeOperation = 'multiply';
         let isDrawing = false;
         let lastX = 0;
         let lastY = 0;
@@ -32,47 +25,33 @@
         let direction = true;
 
         function draw(e) {
-            // stop the fc from running when they aren't moused down
-            if (!isDrawing) return;
-            // il va lire la position lors du passage de la souris de addEventListener
+            if (!isDrawing) return; // stop the fn from running when they are not moused down
             console.log(e);
             ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
-            /* ctx.linewitdh = hue; */
-            // le debut
             ctx.beginPath();
-
-            // la direction 
-            ctx.moveTo(lastX, lastX);
+            // start from
+            ctx.moveTo(lastX, lastY);
+            // go to
             ctx.lineTo(e.offsetX, e.offsetY);
             ctx.stroke();
-
-            // lastX = e.offsetX;
-            // lastY = e.offsetY;
-            // ou  
             [lastX, lastY] = [e.offsetX, e.offsetY];
             hue++;
             if (hue >= 360) {
                 hue = 0;
             }
-
-            if (ctx.linewitdh >= 100 || ctx.linewitdh <= 1) {
+            if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
                 direction = !direction;
             }
             if (direction) {
-                ctx.linewitdh++;
+                ctx.lineWidth++;
             } else {
-                ctx.linewitdh--;
+                ctx.lineWidth--;
             }
         }
-
-        // j'ajoute ces fonctionnalité, si c'est true il va appliquer sinon il ne fait rien.
-        // canvas.addEventListener("mousedown", () => isDrawing = true); 
-        canvas.addEventListener("mousedown", (e) => {
+        canvas.addEventListener('mousedown', (e) => {
             isDrawing = true;
             [lastX, lastY] = [e.offsetX, e.offsetY];
         });
-        // je rajoute des moustaches afin que qd on clique avec la souris, cela ne revient pas au point de depart
-        // mais qu'il part là où la souris est dessus.
         canvas.addEventListener('mousemove', draw);
         canvas.addEventListener('mouseup', () => isDrawing = false);
         canvas.addEventListener('mouseout', () => isDrawing = false);
@@ -84,6 +63,7 @@
             margin: 0;
         }
     </style>
+
 </body>
 
 </html>
